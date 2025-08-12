@@ -2,7 +2,7 @@ import streamlit as st
 import snowflake.connector
 import os
 # Snowflake connection details (use Streamlit secrets in SNIS)
-[connections.snowflake]
+connections.snowflake
 account = "CLQAWDG-BKB11995"
 user = "AYSHAFARHANA"
 password = "Amna@987654321"
