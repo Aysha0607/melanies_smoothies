@@ -1,6 +1,8 @@
-# streamlit_app.py
 import streamlit as st
+from streamlit.connections import SnowflakeConnection
 from snowflake.snowpark.functions import col
+conn = st.connection("snowflake", type="snowflake")
+session = conn.session()
 st.set_page_config(page_title="Smoothie App", layout="centered")
 st.title("Customize your smoothie 🥤")
 st.caption("Choose the fruits you want in your custom smoothie")
