@@ -1,6 +1,5 @@
 import streamlit as st
 from snowflake.snowpark.functions import col
-REQUIRED_KEYS = ["account","user","password","role","warehouse","database","schema"]
 def get_session():
    # 1) Works when running INSIDE Snowflake
    try:
