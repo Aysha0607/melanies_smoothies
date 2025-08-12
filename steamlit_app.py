@@ -10,7 +10,6 @@ role = "SYSADMIN"
 warehouse = "COMPUTE_WH"
 database = "SMOOTHIES"
 schema = "PUBLIC"
-)
 st.title("🍓 Smoothie Orders")
 name = st.text_input("Your Name:")
 flavor = st.selectbox("Choose your smoothie flavor", ["Strawberry", "Banana", "Mango"])
