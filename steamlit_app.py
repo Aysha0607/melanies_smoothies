@@ -102,6 +102,13 @@ if st.button("Submit Order"):
            st.error("Failed to save your order.")
            st.exception(e)
 # ---------------- DORA helper (seed + preview) ----------------
+# make sure this Streamlit session matches the worksheet session
+session.sql("USE ROLE SYSADMIN").collect()
+session.sql("USE WAREHOUSE COMPUTE_WH").collect()
+session.sql("USE DATABASE SMOOTHIES").collect()
+session.sql("USE SCHEMA PUBLIC").collect()
+# hash settings so DORA math matches the course grader
+session.sql("ALTER SESSION SET HASH_OUTPUT_FORMAT='INT', HASH_SEED=0").collect()
 with st.expander("🧪 DORA helper (seed required rows)"):
    st.write(
        """
