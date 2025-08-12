@@ -1,5 +1,19 @@
-# ---------- DORA helper (Streamlit Cloud app) ----------
 import streamlit as st
+from snowflake.snowpark import Session
+import pandas as pd
+# ------------------------------------------------------
+# 1️⃣ Connect to Snowflake using Streamlit secrets
+# ------------------------------------------------------
+session = Session.builder.configs(st.secrets["connections"]["snowflake"]).create()
+st.title("🍹 Smoothie Orders")
+# ------------------------------------------------------
+# 2️⃣ Your existing app code here
+# ------------------------------------------------------
+# Example: order form or other logic
+# ...
+# ------------------------------------------------------
+# 3️⃣ DORA Helper Panel
+# ------------------------------------------------------
 with st.expander("🧪 DORA helper (seed required rows)", expanded=False):
    st.caption(
        "This will TRUNCATE SMOOTHIES.PUBLIC.ORDERS and insert the 3 rows "
@@ -13,9 +27,9 @@ with st.expander("🧪 DORA helper (seed required rows)", expanded=False):
    confirm = st.text_input("Type: I AGREE (this clears the table)")
    if st.button("Prep DORA data") and confirm.strip().upper() == "I AGREE":
        try:
-           # 1) Start fresh
+           # Clear the table
            session.sql("TRUNCATE TABLE SMOOTHIES.PUBLIC.ORDERS").collect()
-           # 2) Insert EXACT rows with a non-null ORDER_TS (DORA filters on this)
+           # Insert the exact required rows
            session.sql("""
                INSERT INTO SMOOTHIES.PUBLIC.ORDERS
                    (INGREDIENTS, NAME_ON_ORDER, ORDER_FILLED, ORDER_TS)
@@ -25,11 +39,10 @@ with st.expander("🧪 DORA helper (seed required rows)", expanded=False):
                  ('Vanilla, Kiwi and Cherries', 'Xi', TRUE, CURRENT_TIMESTAMP())
                AS v(INGREDIENTS, NAME_ON_ORDER, ORDER_FILLED, ORDER_TS)
            """).collect()
-           st.success("Seeded DORA data ✅")
+           st.success("✅ Seeded DORA data successfully!")
        except Exception as e:
-           st.error("Failed to seed DORA data.")
+           st.error("❌ Failed to seed DORA data.")
            st.exception(e)
-   # Optional: show the same checksum DORA uses (so you can verify before grading)
    if st.button("Run local DORA check (preview)"):
        try:
            preview_sql = """
@@ -50,9 +63,10 @@ with st.expander("🧪 DORA helper (seed required rows)", expanded=False):
            expected = 2881182761772377708
            st.write("**Actual**  :", actual)
            st.write("**Expected**:", expected)
-           st.success("If Actual = Expected, the DORA grader will pass. 🎉" if actual == expected
-                      else "Actual != Expected — re‑seed with the button above.")
+           if actual == expected:
+               st.success("🎉 MATCH! The DORA grader will pass.")
+           else:
+               st.error("Mismatch — re-seed with the button above.")
        except Exception as e:
            st.error("Preview check failed.")
            st.exception(e)
-# ---------- end DORA helper ----------
