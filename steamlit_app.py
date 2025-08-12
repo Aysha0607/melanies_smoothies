@@ -1,6 +1,24 @@
-# Import python packages
 import streamlit as st
 from snowflake.snowpark.functions import col
+# Try Snowflake-hosted Streamlit first; fall back to Streamlit Cloud secrets
+def get_session():
+   try:
+       # Works when running INSIDE Snowflake
+       from snowflake.snowpark.context import get_active_session
+       return get_active_session()
+   except Exception:
+       # Works on Streamlit Cloud (needs secrets set)
+       from snowflake.snowpark import Session
+       return Session.builder.configs({
+           "account":   st.secrets["account"],
+           "user":      st.secrets["user"],
+           "password":  st.secrets["password"],
+           "role":      st.secrets["role"],
+           "warehouse": st.secrets["warehouse"],
+           "database":  st.secrets["database"],
+           "schema":    st.secrets["schema"],
+       }).create()
+session = get_session()
 st.title("Customize your smoothie 🥤")
 st.write("Choose the fruits you want in your custom smoothie")
 # Inputs
