@@ -7,6 +7,26 @@ try:
    st.write("✅ Snowflake packages imported")
 except Exception as e:
    st.error(f"❌ Snowflake packages missing: {e}")
+from snowflake.snowpark import Session
+TEST_CONNECTION = {
+   "account":   "CLQAWDG-BKB11995",  # e.g. ab12345.eu-west-1  (NO https://)
+   "user":      "aysha.farhana@ecclesiastical.com",
+   "password":  "Amna@1234",
+   "role":      "ACCOUNTADMIN",                 # or a role that has privileges
+   "warehouse": "COMPUTE_WH",                   # must exist & be started automatically
+   "database":  "SMOOTHIES",
+   "schema":    "PUBLIC",
+}
+def connect_direct(cfg):
+   try:
+       sess = Session.builder.configs(cfg).create()
+       user, db, wh = sess.sql("select current_user(), current_database(), current_warehouse()").collect()[0]
+       st.success(f"Connected as {user} · DB={db} · WH={wh}")
+       return sess
+   except Exception as e:
+       st.exception(e)
+       return None
+session = connect_direct(TEST_CONNECTION)
 st.title("Customize your smoothie 🥤")
 st.write("Choose the fruits you want in your custom smoothie")
 # Inputs
