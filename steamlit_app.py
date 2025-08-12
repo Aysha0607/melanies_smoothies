@@ -1,5 +1,12 @@
 import streamlit as st
 from snowflake.snowpark.functions import col
+import streamlit as st
+try:
+   import snowflake
+   from snowflake.snowpark import Session
+   st.write("✅ Snowflake packages imported")
+except Exception as e:
+   st.error(f"❌ Snowflake packages missing: {e}")
 st.title("Customize your smoothie 🥤")
 st.write("Choose the fruits you want in your custom smoothie")
 # Inputs
