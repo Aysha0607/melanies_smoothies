@@ -5,7 +5,6 @@ st.write("Choose the fruits you want in your custom smoothie")
 # Inputs
 name_on_order = st.text_input("NAME ON SMOOTHIE")
 st.write("NAME ON SMOOTHIE WILL BE: ", name_on_order)
-session = get_active_session()
 fruit_df = session.table("SMOOTHIES.PUBLIC.FRUIT_OPTIONS").select(col("FRUIT_NAME"))
 ingredients_list = st.multiselect("choose up to 5 ing", fruit_df, max_selections=5)
 if st.button("Submit Order"):
