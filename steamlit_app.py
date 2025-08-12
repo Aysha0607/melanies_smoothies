@@ -10,8 +10,8 @@ except Exception as e:
 from snowflake.snowpark import Session
 TEST_CONNECTION = {
    "account":   "CLQAWDG-BKB11995",  # e.g. ab12345.eu-west-1  (NO https://)
-   "user":      "aysha.farhana@ecclesiastical.com",
-   "password":  "Amna@1234",
+   "user":      "ayshafarhana",
+   "password":  "Amna@123456789",
    "role":      "ACCOUNTADMIN",                 # or a role that has privileges
    "warehouse": "COMPUTE_WH",                   # must exist & be started automatically
    "database":  "SMOOTHIES",
